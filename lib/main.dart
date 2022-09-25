@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     // BlocProvider extends InheritedWidget.
     return BlocProvider<NoteBloc>(
       //bloc: NoteBloc(),
-      create: (BuildContext context) => NoteBloc(NotesLoading()),
+      create: (BuildContext context) => NoteBloc(), //NotesLoading()
       child: MaterialApp(
         title: 'MyNotepad',
         theme: ThemeData(

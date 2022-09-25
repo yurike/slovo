@@ -9,6 +9,7 @@ class NoteDao {
   Future<Database> get _db async => await AppDatabase.instance.database;
 
   Future insert(Note note) async {
+    print("insert note ${note.name}");
     await _noteStore.add(await _db, note.toMap());
   }
 

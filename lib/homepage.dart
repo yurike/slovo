@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
+          print("press add btn"); // TODO
           _noteBloc.add(AddRandomNote());
         },
       ),
