@@ -23,6 +23,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       print("AddRandomNote event"); // TODO
       await _noteDao.insert(RandomFruitGenerator.getRandomFruit());
       final notes = await _noteDao.getAllSortedByName();
+      print("notes: $notes");
       emit(NotesLoaded(notes));
       //yield* _reloadNotes();
     });
