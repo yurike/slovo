@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
+import 'package:tekartik_app_flutter_sembast/sembast.dart';
 
 class AppDatabase {
   static final AppDatabase _singleton = AppDatabase._();
   static AppDatabase get instance => _singleton;
 
   // Приватный конструктор. Позволяет создавать инстансы только изнутри класса
-  AppDatabase._();
+  AppDatabase._() {
+    _dbOpenCompleter = Completer();
+  }
 
   // Completer для превращения синхронного кода в асинхронный + доп.фичи
   late Completer<Database> _dbOpenCompleter;
@@ -35,7 +38,8 @@ class AppDatabase {
 
     // File path to a file in the current directory
     String dbPath = 'sample.db';
-    DatabaseFactory dbFactory = databaseFactoryIo;
+    DatabaseFactory dbFactory = getDatabaseFactory();
+
     Database db = await dbFactory.openDatabase(dbPath);
 
     // Any code awaiting the Completer's future will now start executing
