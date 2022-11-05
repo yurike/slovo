@@ -10,54 +10,47 @@ part 'note_event.dart';
 part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
-  NoteDao _noteDao = NoteDao();
+  final NoteDao _noteDao = NoteDao();
 
   NoteBloc() : super(NotesLoading()) {
     on<LoadNotes>((event, emit) async {
-      final notes = await _noteDao.getAllSortedByName();
+      print("on<LoadNotes>");
+      final notes = _noteDao.getAllSortedByName();
       emit(NotesLoaded(notes));
       // yield NotesLoading();
       // yield* _reloadNotes();
     });
+
     on<AddRandomNote>((event, emit) async {
-      print("AddRandomNote event"); // TODO
+      print("on<AddRandomNote>");
       await _noteDao.insert(RandomFruitGenerator.getRandomFruit());
-      final notes = await _noteDao.getAllSortedByName();
-      print("notes: $notes");
+      emit(NotesLoading()); // без этого не обновляется
+      final notes = _noteDao.getAllSortedByName();
       emit(NotesLoaded(notes));
       //yield* _reloadNotes();
+    });
+
+    on<DeleteNote>((event, emit) async {
+      print("on<DeleteNote>");
+      await _noteDao.delete(event.note);
+      emit(NotesLoading());
+      final notes = _noteDao.getAllSortedByName();
+      emit(NotesLoaded(notes));
+    });
+
+    on<UpdateWithRandomNote>((event, emit) async {
+      print("on<UpdateWithRandomNote>");
+      emit(NotesLoading());
+      final newNote = RandomFruitGenerator.getRandomFruit();
+      newNote.id = event.updatedNote.id;
+      await _noteDao.update(newNote);
+      final notes = _noteDao.getAllSortedByName();
+      emit(NotesLoaded(notes));
     });
   }
 
   @override
   NoteState get initialState => NotesLoading();
-
-  // TODO : deprecate?
-  // Stream<NoteState> mapEventToState(
-  //   NoteEvent event,
-  // ) async* {
-  //   if (event is LoadNotes) {
-  //     yield NotesLoading();
-  //     yield* _reloadNotes();
-  //   } else if (event is AddRandomNote) {
-  //     await _noteDao.insert(RandomFruitGenerator.getRandomFruit());
-  //     yield* _reloadNotes();
-  //   } else if (event is UpdateWithRandomNote) {
-  //     final newFruit = RandomFruitGenerator.getRandomFruit();
-  //     newFruit.id = event.updatedNote.id;
-  //     await _noteDao.update(newFruit);
-  //     yield* _reloadNotes();
-  //   } else if (event is DeleteNote) {
-  //     await _noteDao.delete(event.note);
-  //     yield* _reloadNotes();
-  //   }
-  // }
-
-  Stream<NoteState> _reloadNotes() async* {
-    print("_reloadNotes");
-    final notes = await _noteDao.getAllSortedByName();
-    yield NotesLoaded(notes);
-  }
 }
 
 class RandomFruitGenerator {

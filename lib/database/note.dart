@@ -21,7 +21,7 @@ class Note {
     };
   }
 
-  static Note fromMap(Map<String, dynamic> map) {
+  static Note fromMap(Map<dynamic, dynamic> map) {
     return Note(
       name: map['name'],
       body: map['body'],
