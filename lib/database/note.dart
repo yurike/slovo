@@ -2,29 +2,33 @@ class Note {
   // будет автоматом  получаться из базы
   late int id;
 
-  final String name;
+  String title;
   String body;
-  final bool isPoem;
+  int date;
+  bool isPoem;
   //final bool isMarkdown;
 
   Note({
-    required this.name,
+    this.title = 'empty',
     this.body = '',
-    required this.isPoem,
+    this.date = 0,
+    this.isPoem = false,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
+      'name': title,
       'body': body,
+      'date': date,
       'isPoem': isPoem,
     };
   }
 
   static Note fromMap(Map<dynamic, dynamic> map) {
     return Note(
-      name: map['name'],
+      title: map['name'],
       body: map['body'],
+      date: map['date'],
       isPoem: map['isPoem'],
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/homepage.dart';
 import 'package:my_notepad/note_bloc/note_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
@@ -15,11 +14,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Wrapping the whole app with BlocProvider to get access to FruitBloc everywhere
+    // Wrapping the whole app with BlocProvider to get access to NoteBloc everywhere
     // BlocProvider extends InheritedWidget.
     return BlocProvider<NoteBloc>(
-      //bloc: NoteBloc(),
-      create: (BuildContext context) => NoteBloc(), //NotesLoading()
+      create: (BuildContext context) => NoteBloc(),
       child: MaterialApp(
         title: 'MyNotepad',
         theme: ThemeData(

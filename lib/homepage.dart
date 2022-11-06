@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/note_bloc/note_bloc.dart';
+import 'package:my_notepad/pages/edit_page.dart';
 
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
@@ -29,7 +30,12 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          _noteBloc.add(AddRandomNote());
+          //_noteBloc.add(AddRandomNote());
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return EditNotePage(
+              initialNote: null,
+            );
+          }));
         },
       ),
     );
@@ -50,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               final displayedFruit = state.notes[index];
               return ListTile(
-                title: Text(displayedFruit.name),
+                title: Text(displayedFruit.title),
                 subtitle: Text(displayedFruit.isPoem ? 'poem' : 'text'),
                 trailing: _buildUpdateDeleteButtons(displayedFruit),
               );

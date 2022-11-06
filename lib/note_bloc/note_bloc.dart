@@ -27,7 +27,14 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NotesLoading()); // без этого не обновляется
       final notes = _noteDao.getAllSortedByName();
       emit(NotesLoaded(notes));
-      //yield* _reloadNotes();
+    });
+
+    on<AddNote>((event, emit) async {
+      print("on<AddNote>");
+      await _noteDao.insert(event.note);
+      emit(NotesLoading()); // без этого не обновляется
+      final notes = _noteDao.getAllSortedByName();
+      emit(NotesLoaded(notes));
     });
 
     on<DeleteNote>((event, emit) async {
@@ -55,12 +62,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
 class RandomFruitGenerator {
   static final _fruits = [
-    Note(name: 'Banana', isPoem: true),
-    Note(name: 'Strawberry', isPoem: true),
-    Note(name: 'Kiwi', isPoem: false),
-    Note(name: 'Apple', isPoem: true),
-    Note(name: 'Pear', isPoem: true),
-    Note(name: 'Lemon', isPoem: false),
+    Note(title: 'Banana', isPoem: true),
+    Note(title: 'Strawberry', isPoem: true),
+    Note(title: 'Kiwi', isPoem: false),
+    Note(title: 'Apple', isPoem: true),
+    Note(title: 'Pear', isPoem: true),
+    Note(title: 'Lemon', isPoem: false),
   ];
 
   static Note getRandomFruit() {
