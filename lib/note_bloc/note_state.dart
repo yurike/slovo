@@ -16,3 +16,8 @@ class NotesLoaded extends NoteState {
 
   NotesLoaded(this.notes) : super([notes]);
 }
+
+// class NoteEdit extends NoteState {
+//   final Note note;
+//   NoteEdit(this.note) : super([note]);
+// }

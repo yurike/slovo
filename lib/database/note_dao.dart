@@ -22,7 +22,7 @@ class NoteDao {
     return _box.keys.map((key) {
       final value = _box.get(key);
       final note = Note.fromMap(value);
-      note.id = key;
+      note.id = key; // here id is created
       return note;
     }).toList();
   }

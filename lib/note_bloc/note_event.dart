@@ -17,9 +17,19 @@ class AddNote extends NoteEvent {
   AddNote(this.note) : super([note]);
 }
 
-class UpdateWithRandomNote extends NoteEvent {
+// class EditNote extends NoteEvent {
+//   final Note note;
+//   EditNote(this.note) : super([note]);
+// }
+
+// class UpdateWithRandomNote extends NoteEvent {
+//   final Note updatedNote;
+//   UpdateWithRandomNote(this.updatedNote) : super([updatedNote]);
+// }
+
+class UpdateNote extends NoteEvent {
   final Note updatedNote;
-  UpdateWithRandomNote(this.updatedNote) : super([updatedNote]);
+  UpdateNote(this.updatedNote) : super([updatedNote]);
 }
 
 class DeleteNote extends NoteEvent {

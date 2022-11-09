@@ -37,18 +37,20 @@ class _EditNotePageState extends State<EditNotePage> {
   Future save() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      _noteBloc.add(AddNote(Note()
-        //..id = _noteId
+      var date = DateTime.now().millisecondsSinceEpoch;
+      var note = Note()
+        ..id = _noteId != null ? _noteId! : date
         ..title = _titleTextController!.text
         ..body = _contentTextController!.text
-        ..date = DateTime.now().millisecondsSinceEpoch));
-      // ignore: use_build_context_synchronously
+        ..date = date;
+      //if (_noteId != null) note.id = _noteId!;
+
+      _noteBloc.add(_noteId != null ? UpdateNote(note) : AddNote(note));
       Navigator.pop(context);
       // Pop twice when editing
-      if (_noteId != null) {
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
-      }
+      // if (_noteId != null) {
+      //   Navigator.pop(context);
+      // }
     }
   }
 

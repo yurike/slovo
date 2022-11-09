@@ -5,6 +5,7 @@ import 'package:my_notepad/note_bloc/note_bloc.dart';
 import 'package:my_notepad/pages/edit_page.dart';
 
 class HomePage extends StatefulWidget {
+  @override
   _HomePageState createState() => _HomePageState();
 }
 
@@ -24,18 +25,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Notepad'),
+        title: const Text('My Notepad'),
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           //_noteBloc.add(AddRandomNote());
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return EditNotePage(
-              initialNote: null,
-            );
-          }));
+          goEditPage(null);
         },
       ),
     );
@@ -47,23 +44,23 @@ class _HomePageState extends State<HomePage> {
       // Whenever there is a new state emitted from the bloc, builder runs.
       builder: (BuildContext context, NoteState state) {
         if (state is NotesLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state is NotesLoaded) {
           return ListView.builder(
             itemCount: state.notes.length,
             itemBuilder: (context, index) {
-              final displayedFruit = state.notes[index];
+              final note = state.notes[index];
               return ListTile(
-                title: Text(displayedFruit.title),
-                subtitle: Text(displayedFruit.isPoem ? 'poem' : 'text'),
-                trailing: _buildUpdateDeleteButtons(displayedFruit),
+                title: Text(note.title),
+                subtitle: Text(note.isPoem ? 'poem' : 'text'),
+                trailing: _buildUpdateDeleteButtons(note),
               );
             },
           );
         }
-        throw "Impossible error";
+        throw "Unhandled state error";
       },
     );
   }
@@ -73,9 +70,11 @@ class _HomePageState extends State<HomePage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.refresh),
+          icon: const Icon(Icons.refresh),
           onPressed: () {
-            _noteBloc.add(UpdateWithRandomNote(displayedNote));
+            goEditPage(displayedNote);
+            // _noteBloc.add(UpdateWithRandomNote(displayedNote));
+            //_noteBloc.add(EditNote(displayedNote));
           },
         ),
         IconButton(
@@ -86,5 +85,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  void goEditPage(Note? note) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return EditNotePage(
+        initialNote: note,
+      );
+    }));
   }
 }
