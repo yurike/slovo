@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/note_bloc/note_bloc.dart';
 import 'package:my_notepad/pages/edit_page.dart';
+import 'package:my_notepad/pages/note_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
         onPressed: () {
           //_noteBloc.add(AddRandomNote());
-          goEditPage(null);
+          goToNotePage(note: null);
         },
       ),
     );
@@ -56,6 +57,9 @@ class _HomePageState extends State<HomePage> {
                 title: Text(note.title),
                 subtitle: Text(note.isPoem ? 'poem' : 'text'),
                 trailing: _buildUpdateDeleteButtons(note),
+                onTap: () {
+                  goToNotePage(note: note, edit: false);
+                },
               );
             },
           );
@@ -72,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: () {
-            goEditPage(displayedNote);
+            goToNotePage(note: displayedNote);
             // _noteBloc.add(UpdateWithRandomNote(displayedNote));
             //_noteBloc.add(EditNote(displayedNote));
           },
@@ -87,11 +91,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void goEditPage(Note? note) {
+  void goToNotePage({required Note? note, bool edit = true}) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return EditNotePage(
-        initialNote: note,
-      );
+      if (edit) {
+        return EditNotePage(initialNote: note);
+      } else {
+        return NotePage(note: note);
+      }
     }));
   }
 }
