@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late NoteBloc _noteBloc;
   bool _compactMode = false;
+  bool _showButtons = true;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blueGrey,
             ),
             child: Column(
@@ -47,8 +48,15 @@ class _HomePageState extends State<HomePage> {
             title: const Text("Compact mode"),
             value: _compactMode,
             onChanged: (value) {
-              _noteBloc.add(CompactTiles(value));
+              //_noteBloc.add(CompactTiles(value));
               setState(() => _compactMode = value);
+            },
+          ),
+          SwitchListTile(
+            title: const Text("Show buttons"),
+            value: _showButtons,
+            onChanged: (value) {
+              setState(() => _showButtons = value);
             },
           )
         ]),
@@ -82,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 title: Text(note.title),
                 subtitle:
                     _compactMode ? null : Text(note.isPoem ? 'poem' : 'text'),
-                trailing: _buildUpdateDeleteButtons(note),
+                trailing: _showButtons ? _buildUpdateDeleteButtons(note) : null,
                 onTap: () {
                   goToNotePage(note: note, edit: false);
                 },
