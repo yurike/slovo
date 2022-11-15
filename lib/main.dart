@@ -21,9 +21,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'MyNotepad',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.yellow)
-              .copyWith(secondary: Colors.redAccent),
-        ),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+                .copyWith(secondary: Colors.teal)),
         home: HomePage(),
       ),
     );

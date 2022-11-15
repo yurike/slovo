@@ -12,13 +12,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteBloc _noteBloc;
+  bool _compactMode = false;
 
   @override
   void initState() {
     super.initState();
     _noteBloc = BlocProvider.of<NoteBloc>(context);
     // Events can be passed into the bloc by calling add.
-    // We want to start loading fruits right from the start.
     _noteBloc.add(LoadNotes());
   }
 
@@ -27,6 +27,31 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Notepad'),
+      ),
+      drawer: Drawer(
+        child: ListView(children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+            ),
+            child: Column(
+              children: [
+                const Text(
+                  'Options',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          SwitchListTile(
+            title: const Text("Compact mode"),
+            value: _compactMode,
+            onChanged: (value) {
+              _noteBloc.add(CompactTiles(value));
+              setState(() => _compactMode = value);
+            },
+          )
+        ]),
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
@@ -55,7 +80,8 @@ class _HomePageState extends State<HomePage> {
               final note = state.notes[index];
               return ListTile(
                 title: Text(note.title),
-                subtitle: Text(note.isPoem ? 'poem' : 'text'),
+                subtitle:
+                    _compactMode ? null : Text(note.isPoem ? 'poem' : 'text'),
                 trailing: _buildUpdateDeleteButtons(note),
                 onTap: () {
                   goToNotePage(note: note, edit: false);

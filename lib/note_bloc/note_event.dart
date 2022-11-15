@@ -36,3 +36,9 @@ class DeleteNote extends NoteEvent {
   final Note note;
   DeleteNote(this.note) : super([note]);
 }
+
+// settings bloc?
+class CompactTiles extends NoteEvent {
+  final bool isCompact;
+  CompactTiles(this.isCompact) : super([isCompact]);
+}
