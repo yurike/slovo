@@ -57,10 +57,6 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       final notes = _noteDao.getAllSortedByName();
       emit(NotesLoaded(notes));
     });
-
-    on<CompactTiles>((event, emit) async {
-      print("on<CompactTiles> ${event.isCompact}");
-    });
   }
 
   @override
