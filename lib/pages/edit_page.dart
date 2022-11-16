@@ -144,12 +144,8 @@ class _EditNotePageState extends State<EditNotePage> {
                           }) ??
                       false) {
                     _noteBloc.add(DeleteNote(widget.initialNote!));
-                    //await noteProvider.deleteNote(widget.initialNote!.id);
-                    // Pop twice to go back to the list
-                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pop();
+                    Navigator.of(context).maybePop();
                   }
                 },
               ),
