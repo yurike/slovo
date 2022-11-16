@@ -88,8 +88,7 @@ class _HomePageState extends State<HomePage> {
               final note = state.notes[index];
               return ListTile(
                 title: Text(note.title),
-                subtitle:
-                    _compactMode ? null : Text(note.isPoem ? 'poem' : 'text'),
+                subtitle: _compactMode ? null : _buildSubtitle(note),
                 trailing: _showButtons ? _buildUpdateDeleteButtons(note) : null,
                 onTap: () {
                   goToNotePage(note: note, edit: false);
@@ -103,12 +102,23 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Text _buildSubtitle(Note note) {
+    String txt = note.body.trim().replaceAll("\n", " ");
+    int end = txt.length > 70 ? 70 : txt.length;
+    txt = txt.substring(0, end);
+    return Text(
+      txt,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
   Row _buildUpdateDeleteButtons(Note displayedNote) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         IconButton(
-          icon: const Icon(Icons.refresh),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             goToNotePage(note: displayedNote);
             // _noteBloc.add(UpdateWithRandomNote(displayedNote));
