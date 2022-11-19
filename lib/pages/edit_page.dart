@@ -48,9 +48,9 @@ class _EditNotePageState extends State<EditNotePage> {
       _noteBloc.add(_noteId != null ? UpdateNote(note) : AddNote(note));
       Navigator.pop(context);
       // Pop twice when editing
-      // if (_noteId != null) {
-      //   Navigator.pop(context);
-      // }
+      if (_noteId != null) {
+        Navigator.maybePop(context);
+      }
     }
   }
 
@@ -159,7 +159,7 @@ class _EditNotePageState extends State<EditNotePage> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: ListView(children: <Widget>[
             Form(
                 key: _formKey,
@@ -187,9 +187,9 @@ class _EditNotePageState extends State<EditNotePage> {
                         controller: _contentTextController,
                         validator: (val) => val!.isNotEmpty
                             ? null
-                            : 'Description must not be empty',
+                            : 'Content must not be empty',
                         keyboardType: TextInputType.multiline,
-                        maxLines: 5,
+                        maxLines: 15,
                       )
                     ]))
           ]),
