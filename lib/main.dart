@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/pages/homepage.dart';
 import 'package:my_notepad/note_bloc/note_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_notepad/settings/theme_class.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +20,14 @@ class MyApp extends StatelessWidget {
     return BlocProvider<NoteBloc>(
       create: (BuildContext context) => NoteBloc(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'MyNotepad',
-        theme: ThemeData(
-            // TODO: Night mode
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-                .copyWith(secondary: Colors.teal)),
+        themeMode: ThemeMode.dark,
+        theme: ThemeClass.lightTheme,
+        darkTheme: ThemeClass.darkTheme,
+        // theme: ThemeData(
+        //     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+        //         .copyWith(secondary: Colors.teal)),
         home: HomePage(),
       ),
     );

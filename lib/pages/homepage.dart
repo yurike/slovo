@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteBloc _noteBloc;
+  bool _darkMode = false;
   bool _compactMode = false;
   bool _showButtons = true;
 
@@ -26,6 +27,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _darkMode
+          ? Theme.of(context).primaryColorDark
+          : Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: const Text('My Notepad'),
       ),
@@ -43,6 +47,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+          ),
+          SwitchListTile(
+            title: const Text("Dark mode"),
+            value: _darkMode,
+            onChanged: (value) => setState(() => _darkMode = value),
           ),
           SwitchListTile(
             title: const Text("Compact mode"),
