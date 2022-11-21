@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/database/note.dart';
-import 'package:my_notepad/note_bloc/note_bloc.dart';
+import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
 
 class EditNotePage extends StatefulWidget {
   /// null when adding a note
