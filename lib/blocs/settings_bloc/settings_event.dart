@@ -6,3 +6,8 @@ abstract class SettingsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class SetDarkMode extends SettingsEvent {
+  final bool isDark;
+  SetDarkMode(this.isDark) : super();
+}

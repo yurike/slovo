@@ -28,16 +28,21 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => SettingsBloc(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'MyNotepad',
-        themeMode: ThemeMode.dark,
-        theme: ThemeClass.lightTheme,
-        darkTheme: ThemeClass.darkTheme,
-        // theme: ThemeData(
-        //     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-        //         .copyWith(secondary: Colors.teal)),
-        home: HomePage(),
+      child: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'MyNotepad',
+            themeMode:
+                state.darkMode ? ThemeMode.dark : ThemeMode.light, // system?
+            theme: ThemeClass.lightTheme,
+            darkTheme: ThemeClass.darkTheme,
+            // theme: ThemeData(
+            //     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+            //         .copyWith(secondary: Colors.teal)),
+            home: HomePage(),
+          );
+        },
       ),
     );
   }

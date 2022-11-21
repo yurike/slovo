@@ -9,9 +9,9 @@ class ThemeClass {
       ));
 
   static ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: Color.fromARGB(255, 11, 11, 11),
       colorScheme: ColorScheme.dark(),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.black45,
+        backgroundColor: Colors.black,
       ));
 }

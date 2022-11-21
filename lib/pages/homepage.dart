@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_notepad/blocs/settings_bloc/settings_bloc.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
 import 'package:my_notepad/pages/edit_page.dart';
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteBloc _noteBloc;
-  bool _darkMode = false;
+  late SettingsBloc _settingsBloc;
   bool _compactMode = false;
   bool _showButtons = true;
 
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _noteBloc = BlocProvider.of<NoteBloc>(context);
+    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     // Events can be passed into the bloc by calling add.
     _noteBloc.add(LoadNotes());
   }
@@ -27,48 +29,53 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _darkMode
-          ? Theme.of(context).primaryColorDark
-          : Theme.of(context).backgroundColor,
       appBar: AppBar(
+        //backgroundColor: Theme.of(context).primaryColorDark,
         title: const Text('My Notepad'),
       ),
-      drawer: Drawer(
-        child: ListView(children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.blueGrey,
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  'Options',
-                  style: TextStyle(color: Colors.white),
+      drawer: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          return Drawer(
+            child: ListView(children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
                 ),
-              ],
-            ),
-          ),
-          SwitchListTile(
-            title: const Text("Dark mode"),
-            value: _darkMode,
-            onChanged: (value) => setState(() => _darkMode = value),
-          ),
-          SwitchListTile(
-            title: const Text("Compact mode"),
-            value: _compactMode,
-            onChanged: (value) {
-              //_noteBloc.add(CompactTiles(value));
-              setState(() => _compactMode = value);
-            },
-          ),
-          SwitchListTile(
-            title: const Text("Show buttons"),
-            value: _showButtons,
-            onChanged: (value) {
-              setState(() => _showButtons = value);
-            },
-          )
-        ]),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Options',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+              SwitchListTile(
+                title: const Text("Dark mode"),
+                value: state.darkMode,
+                onChanged: (value) {
+                  _settingsBloc.add(SetDarkMode(value));
+                },
+                //onChanged: (value) => setState(() => _darkMode = value),
+              ),
+              SwitchListTile(
+                title: const Text("Compact mode"),
+                value: _compactMode,
+                onChanged: (value) {
+                  //_noteBloc.add(CompactTiles(value));
+                  setState(() => _compactMode = value);
+                },
+              ),
+              SwitchListTile(
+                title: const Text("Show buttons"),
+                value: _showButtons,
+                onChanged: (value) {
+                  setState(() => _showButtons = value);
+                },
+              )
+            ]),
+          );
+        },
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
