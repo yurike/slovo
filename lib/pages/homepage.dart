@@ -6,20 +6,12 @@ import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
 import 'package:my_notepad/pages/edit_page.dart';
 import 'package:my_notepad/pages/note_page.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<NoteBloc>(context).add(LoadNotes());
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<NoteBloc>(context).add(LoadNotes());
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Notepad'),
@@ -67,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => goToNotePage(note: null),
+        onPressed: () => goToNotePage(context, note: null),
       ),
     );
   }
@@ -91,10 +83,10 @@ class _HomePageState extends State<HomePage> {
                     subtitle:
                         settingsState.compactMode ? null : _buildSubtitle(note),
                     trailing: settingsState.showButtons
-                        ? _buildUpdateDeleteButtons(note)
+                        ? _buildUpdateDeleteButtons(context, note)
                         : null,
                     onTap: () {
-                      goToNotePage(note: note, edit: false);
+                      goToNotePage(context, note: note, edit: false);
                     },
                   );
                 },
@@ -118,14 +110,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Row _buildUpdateDeleteButtons(Note displayedNote) {
+  Row _buildUpdateDeleteButtons(context, Note displayedNote) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () {
-            goToNotePage(note: displayedNote);
+            goToNotePage(context, note: displayedNote);
           },
         ),
         IconButton(
@@ -138,7 +130,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void goToNotePage({required Note? note, bool edit = true}) {
+  void goToNotePage(context, {required Note? note, bool edit = true}) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       if (edit) {
         return EditNotePage(initialNote: note);
