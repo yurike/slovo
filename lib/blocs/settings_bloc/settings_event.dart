@@ -7,7 +7,13 @@ abstract class SettingsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SetDarkMode extends SettingsEvent {
+// class SetDarkMode extends SettingsEvent {
+//   final bool isDark;
+//   const SetDarkMode(this.isDark) : super();
+// }
+
+class SetMode extends SettingsEvent {
   final bool isDark;
-  SetDarkMode(this.isDark) : super();
+  final bool isCompact;
+  const SetMode(this.isDark, this.isCompact) : super();
 }

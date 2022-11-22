@@ -6,19 +6,22 @@ part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
-  SettingsBloc() : super(SettingsState(darkMode: false)) {
-    on<SetDarkMode>((event, emit) {
-      emit(SettingsState(darkMode: event.isDark));
+  SettingsBloc() : super(SettingsState(darkMode: false, compactMode: false)) {
+    on<SetMode>((event, emit) {
+      emit(SettingsState(darkMode: event.isDark, compactMode: event.isCompact));
     });
   }
 
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {
-    return SettingsState(darkMode: json['darkMode'] as bool);
+    return SettingsState(
+      darkMode: json['darkMode'] as bool,
+      compactMode: json['compactMode'] as bool,
+    );
   }
 
   @override
   Map<String, dynamic>? toJson(SettingsState state) {
-    return {'darkMode': state.darkMode};
+    return {'darkMode': state.darkMode, 'compactMode': state.compactMode};
   }
 }

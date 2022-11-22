@@ -12,16 +12,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late NoteBloc _noteBloc;
-  bool _compactMode = false;
+  //late NoteBloc _noteBloc;
+  //bool _compactMode = false;
   bool _showButtons = true;
 
   @override
   void initState() {
     super.initState();
-    _noteBloc = BlocProvider.of<NoteBloc>(context);
-    // Events can be passed into the bloc by calling add.
-    _noteBloc.add(LoadNotes());
+    BlocProvider.of<NoteBloc>(context).add(LoadNotes());
   }
 
   @override
@@ -48,18 +46,16 @@ class _HomePageState extends State<HomePage> {
               SwitchListTile(
                 title: const Text("Dark mode"),
                 value: state.darkMode,
-                onChanged: (value) {
-                  context.read<SettingsBloc>().add(SetDarkMode(value));
-                  //_settingsBloc.add(SetDarkMode(value));
-                },
-                //onChanged: (value) => setState(() => _darkMode = value),
+                onChanged: (value) => context
+                    .read<SettingsBloc>()
+                    .add(SetMode(value, state.compactMode)),
               ),
               SwitchListTile(
                 title: const Text("Compact mode"),
-                value: _compactMode,
-                onChanged: (value) {
-                  setState(() => _compactMode = value);
-                },
+                value: state.compactMode,
+                onChanged: (value) => context
+                    .read<SettingsBloc>()
+                    .add(SetMode(state.darkMode, value)),
               ),
               SwitchListTile(
                 title: const Text("Show buttons"),
@@ -75,18 +71,13 @@ class _HomePageState extends State<HomePage> {
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
-          //_noteBloc.add(AddRandomNote());
-          goToNotePage(note: null);
-        },
+        onPressed: () => goToNotePage(note: null),
       ),
     );
   }
 
   Widget _buildBody() {
-    return BlocBuilder(
-      bloc: _noteBloc,
-      // Whenever there is a new state emitted from the bloc, builder runs.
+    return BlocBuilder<NoteBloc, NoteState>(
       builder: (BuildContext context, NoteState state) {
         if (state is NotesLoading) {
           return const Center(
@@ -97,12 +88,18 @@ class _HomePageState extends State<HomePage> {
             itemCount: state.notes.length,
             itemBuilder: (context, index) {
               final note = state.notes[index];
-              return ListTile(
-                title: Text(note.title),
-                subtitle: _compactMode ? null : _buildSubtitle(note),
-                trailing: _showButtons ? _buildUpdateDeleteButtons(note) : null,
-                onTap: () {
-                  goToNotePage(note: note, edit: false);
+              return BlocBuilder<SettingsBloc, SettingsState>(
+                builder: (context, settingsState) {
+                  return ListTile(
+                    title: Text(note.title),
+                    subtitle:
+                        settingsState.compactMode ? null : _buildSubtitle(note),
+                    trailing:
+                        _showButtons ? _buildUpdateDeleteButtons(note) : null,
+                    onTap: () {
+                      goToNotePage(note: note, edit: false);
+                    },
+                  );
                 },
               );
             },
@@ -132,14 +129,12 @@ class _HomePageState extends State<HomePage> {
           icon: const Icon(Icons.edit),
           onPressed: () {
             goToNotePage(note: displayedNote);
-            // _noteBloc.add(UpdateWithRandomNote(displayedNote));
-            //_noteBloc.add(EditNote(displayedNote));
           },
         ),
         IconButton(
-          icon: Icon(Icons.delete_outline),
+          icon: const Icon(Icons.delete_outline),
           onPressed: () {
-            _noteBloc.add(DeleteNote(displayedNote));
+            BlocProvider.of<NoteBloc>(context).add(DeleteNote(displayedNote));
           },
         ),
       ],
