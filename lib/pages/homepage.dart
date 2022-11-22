@@ -12,10 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //late NoteBloc _noteBloc;
-  //bool _compactMode = false;
-  bool _showButtons = true;
-
   @override
   void initState() {
     super.initState();
@@ -48,21 +44,21 @@ class _HomePageState extends State<HomePage> {
                 value: state.darkMode,
                 onChanged: (value) => context
                     .read<SettingsBloc>()
-                    .add(SetMode(value, state.compactMode)),
+                    .add(SetMode(value, state.compactMode, state.showButtons)),
               ),
               SwitchListTile(
                 title: const Text("Compact mode"),
                 value: state.compactMode,
                 onChanged: (value) => context
                     .read<SettingsBloc>()
-                    .add(SetMode(state.darkMode, value)),
+                    .add(SetMode(state.darkMode, value, state.showButtons)),
               ),
               SwitchListTile(
                 title: const Text("Show buttons"),
-                value: _showButtons,
-                onChanged: (value) {
-                  setState(() => _showButtons = value);
-                },
+                value: state.showButtons,
+                onChanged: (value) => context
+                    .read<SettingsBloc>()
+                    .add(SetMode(state.darkMode, state.compactMode, value)),
               )
             ]),
           );
@@ -94,8 +90,9 @@ class _HomePageState extends State<HomePage> {
                     title: Text(note.title),
                     subtitle:
                         settingsState.compactMode ? null : _buildSubtitle(note),
-                    trailing:
-                        _showButtons ? _buildUpdateDeleteButtons(note) : null,
+                    trailing: settingsState.showButtons
+                        ? _buildUpdateDeleteButtons(note)
+                        : null,
                     onTap: () {
                       goToNotePage(note: note, edit: false);
                     },

@@ -15,5 +15,6 @@ abstract class SettingsEvent extends Equatable {
 class SetMode extends SettingsEvent {
   final bool isDark;
   final bool isCompact;
-  const SetMode(this.isDark, this.isCompact) : super();
+  final bool showButtons;
+  const SetMode(this.isDark, this.isCompact, this.showButtons) : super();
 }
