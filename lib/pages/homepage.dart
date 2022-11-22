@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteBloc _noteBloc;
-  late SettingsBloc _settingsBloc;
   bool _compactMode = false;
   bool _showButtons = true;
 
@@ -21,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _noteBloc = BlocProvider.of<NoteBloc>(context);
-    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     // Events can be passed into the bloc by calling add.
     _noteBloc.add(LoadNotes());
   }
@@ -30,7 +28,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: Theme.of(context).primaryColorDark,
         title: const Text('My Notepad'),
       ),
       drawer: BlocBuilder<SettingsBloc, SettingsState>(
@@ -38,15 +35,13 @@ class _HomePageState extends State<HomePage> {
           return Drawer(
             child: ListView(children: [
               DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 child: Column(
                   children: [
-                    const Text(
-                      'Options',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    Text('Options',
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ],
                 ),
               ),
@@ -54,7 +49,8 @@ class _HomePageState extends State<HomePage> {
                 title: const Text("Dark mode"),
                 value: state.darkMode,
                 onChanged: (value) {
-                  _settingsBloc.add(SetDarkMode(value));
+                  context.read<SettingsBloc>().add(SetDarkMode(value));
+                  //_settingsBloc.add(SetDarkMode(value));
                 },
                 //onChanged: (value) => setState(() => _darkMode = value),
               ),
@@ -62,7 +58,6 @@ class _HomePageState extends State<HomePage> {
                 title: const Text("Compact mode"),
                 value: _compactMode,
                 onChanged: (value) {
-                  //_noteBloc.add(CompactTiles(value));
                   setState(() => _compactMode = value);
                 },
               ),

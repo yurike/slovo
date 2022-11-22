@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:my_notepad/blocs/settings_bloc/settings_bloc.dart';
 import 'package:my_notepad/pages/homepage.dart';
 import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
@@ -10,16 +13,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('notes');
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Wrapping the whole app with BlocProvider to get access to NoteBloc everywhere
-    // BlocProvider extends InheritedWidget.
     return MultiBlocProvider(
-      //create: (BuildContext context) => NoteBloc(),
       providers: [
         BlocProvider<NoteBloc>(
           create: (BuildContext context) => NoteBloc(),
@@ -37,9 +42,6 @@ class MyApp extends StatelessWidget {
                 state.darkMode ? ThemeMode.dark : ThemeMode.light, // system?
             theme: ThemeClass.lightTheme,
             darkTheme: ThemeClass.darkTheme,
-            // theme: ThemeData(
-            //     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-            //         .copyWith(secondary: Colors.teal)),
             home: HomePage(),
           );
         },
