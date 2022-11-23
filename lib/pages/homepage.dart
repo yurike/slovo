@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
       drawer: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
           return Drawer(
+            width: 250,
             child: ListView(children: [
               DrawerHeader(
                 decoration: BoxDecoration(
