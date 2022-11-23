@@ -16,52 +16,56 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My Notepad'),
       ),
-      drawer: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) {
-          return Drawer(
-            width: 250,
-            child: ListView(children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                child: Column(
-                  children: [
-                    Text('Options',
-                        style: Theme.of(context).textTheme.headlineSmall),
-                  ],
-                ),
-              ),
-              SwitchListTile(
-                title: const Text("Dark mode"),
-                value: state.darkMode,
-                onChanged: (value) => context
-                    .read<SettingsBloc>()
-                    .add(SetMode(value, state.compactMode, state.showButtons)),
-              ),
-              SwitchListTile(
-                title: const Text("Compact mode"),
-                value: state.compactMode,
-                onChanged: (value) => context
-                    .read<SettingsBloc>()
-                    .add(SetMode(state.darkMode, value, state.showButtons)),
-              ),
-              SwitchListTile(
-                title: const Text("Show buttons"),
-                value: state.showButtons,
-                onChanged: (value) => context
-                    .read<SettingsBloc>()
-                    .add(SetMode(state.darkMode, state.compactMode, value)),
-              )
-            ]),
-          );
-        },
-      ),
+      drawer: _buildDrawer(),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => goToNotePage(context, note: null),
       ),
+    );
+  }
+
+  Widget _buildDrawer() {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        return Drawer(
+          width: 250,
+          child: ListView(children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              child: Column(
+                children: [
+                  Text('Options',
+                      style: Theme.of(context).textTheme.headlineSmall),
+                ],
+              ),
+            ),
+            SwitchListTile(
+              title: const Text("Dark mode"),
+              value: state.darkMode,
+              onChanged: (value) => context
+                  .read<SettingsBloc>()
+                  .add(SetMode(value, state.compactMode, state.showButtons)),
+            ),
+            SwitchListTile(
+              title: const Text("Compact mode"),
+              value: state.compactMode,
+              onChanged: (value) => context
+                  .read<SettingsBloc>()
+                  .add(SetMode(state.darkMode, value, state.showButtons)),
+            ),
+            SwitchListTile(
+              title: const Text("Show buttons"),
+              value: state.showButtons,
+              onChanged: (value) => context
+                  .read<SettingsBloc>()
+                  .add(SetMode(state.darkMode, state.compactMode, value)),
+            )
+          ]),
+        );
+      },
     );
   }
 
