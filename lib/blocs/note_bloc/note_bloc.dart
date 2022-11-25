@@ -16,13 +16,13 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   NoteBloc() : super(NotesLoading()) {
     on<LoadNotes>((event, emit) async {
-      print("on<LoadNotes>");
+      debugPrint("on<LoadNotes>");
       final notes = _noteDao.getAllSortedByName();
       emit(NotesLoaded(notes));
     });
 
     on<AddNote>((event, emit) async {
-      print("on<AddNote>");
+      debugPrint("on<AddNote>");
       emit(NotesLoading()); // без этого не обновляется
       await _noteDao.insert(event.note);
       final notes = _noteDao.getAllSortedByName();
@@ -35,7 +35,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     // });
 
     on<DeleteNote>((event, emit) async {
-      print("on<DeleteNote>");
+      debugPrint("on<DeleteNote>");
       await _noteDao.delete(event.note);
       emit(NotesLoading());
       final notes = _noteDao.getAllSortedByName();
@@ -43,7 +43,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     });
 
     on<UpdateNote>((event, emit) async {
-      print("on<UpdateNote>");
+      debugPrint("on<UpdateNote>");
       emit(NotesLoading());
       //newNote.id = event.updatedNote.id;
       await _noteDao.update(event.updatedNote);
@@ -52,7 +52,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     });
 
     on<ImportFromFile>((event, emit) async {
-      print("on<ImportFromFile>");
+      debugPrint("on<ImportFromFile>");
       emit(NotesLoading());
       var newNotes = await GetIt.I<Backup>().readFromFilePicker();
       if (newNotes != null) {

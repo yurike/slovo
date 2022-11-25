@@ -21,7 +21,7 @@ class Note {
   });
 
   factory Note.fromJson(Map myjson) {
-    print(myjson.runtimeType);
+    //debugPrint(myjson.runtimeType);
     return Note(
       title: myjson['title'] as String,
       body: myjson['body'] as String,
