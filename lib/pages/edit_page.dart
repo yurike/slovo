@@ -42,7 +42,7 @@ class _EditNotePageState extends State<EditNotePage> {
         ..id = _noteId != null ? _noteId! : date
         ..title = _titleTextController!.text
         ..body = _contentTextController!.text
-        ..date = date;
+        ..created = date;
       //if (_noteId != null) note.id = _noteId!;
 
       _noteBloc.add(_noteId != null ? UpdateNote(note) : AddNote(note));

@@ -17,6 +17,8 @@ class AddNote extends NoteEvent {
   AddNote(this.note) : super([note]);
 }
 
+class ImportFromFile extends NoteEvent {}
+
 // class EditNote extends NoteEvent {
 //   final Note note;
 //   EditNote(this.note) : super([note]);

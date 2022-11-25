@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:my_notepad/blocs/settings_bloc/settings_bloc.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
 import 'package:my_notepad/pages/edit_page.dart';
 import 'package:my_notepad/pages/note_page.dart';
+import 'package:my_notepad/utils/backup.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         return Drawer(
-          width: 250,
+          width: 230,
           child: ListView(children: [
             DrawerHeader(
               decoration: BoxDecoration(
@@ -62,6 +64,15 @@ class HomePage extends StatelessWidget {
               onChanged: (value) => context
                   .read<SettingsBloc>()
                   .add(SetMode(state.darkMode, state.compactMode, value)),
+            ),
+            ListTile(
+              leading: ElevatedButton(
+                onPressed: () {
+                  context.read<NoteBloc>().add(ImportFromFile());
+                  Navigator.of(context).maybePop();
+                },
+                child: Text("Import"),
+              ),
             )
           ]),
         );
