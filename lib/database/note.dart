@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 class Note {
-  // будет автоматом  получаться из базы
-  late int id;
+  late int id; // будет автоматом  получаться из базы
 
   String title;
   String body;
@@ -23,11 +20,12 @@ class Note {
   factory Note.fromJson(Map myjson) {
     //debugPrint(myjson.runtimeType);
     return Note(
-      title: myjson['title'] as String,
+      title:
+          myjson['title'] as String? ?? myjson['name'] as String? ?? "unnamed",
       body: myjson['body'] as String,
-      created: myjson['created'] as int,
-      modified: myjson['modified'] as int,
-      markdown: myjson['markdown'] as bool,
+      created: myjson['created'] as int? ?? 0,
+      modified: myjson['modified'] as int? ?? 0,
+      markdown: myjson['markdown'] as bool? ?? false,
       //tags: json.decode(myjson['tags']).cast<String>().toList(),
     );
   }

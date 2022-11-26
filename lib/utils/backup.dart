@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,17 +20,16 @@ class Backup {
     return File('$path/backup.json');
   }
 
-  Future<File> writePeople(List<Note> people) async {
-    if (!await Permission.storage.request().isGranted) {
+  Future<File?> writeBackup(List<Note> notes) async {
+    if (kIsWeb || !await Permission.storage.request().isGranted) {
       return Future.value(null);
     }
-
     final file = await _localFile;
     if (!await file.exists()) {
       await file.create(recursive: true);
     }
-    String encodedPeople = jsonEncode(people);
-    return file.writeAsString(encodedPeople);
+    String encoded = jsonEncode(notes);
+    return file.writeAsString(encoded);
   }
 
   void share() async {

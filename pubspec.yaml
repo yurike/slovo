@@ -38,7 +38,7 @@ dependencies:
   # Hive
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  cryptography_flutter: ^2.0.2
+  # cryptography_flutter: ^2.0.2
   # import / export
   permission_handler: ^8.0.0+1 # to handle the permissions to read and write files
   share: ^2.0.1 # to share the file that we create

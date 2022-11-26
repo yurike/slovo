@@ -12,24 +12,23 @@ class NoteDao {
     _box.put(note.id, note.toJson());
   }
 
-  Future addAll(List<Note> notes) async {
-    for (Note n in notes) {
-      _box.add(n.toJson());
-    }
-  }
-
   Future delete(Note note) async {
     _box.delete(note.id);
   }
 
   List<Note> getAllSortedByName() {
-    //print("getAllSortedByName ${_box.values.length}");
-
+    //debugPrint("getAllSortedByName ${_box.values.length}");
     return _box.keys.map((key) {
       final value = _box.get(key);
       final note = Note.fromJson(value);
       note.id = key; // here id is created
       return note;
     }).toList();
+  }
+
+  Future addAll(List<Note> notes) async {
+    for (Note n in notes) {
+      _box.add(n.toJson());
+    }
   }
 }

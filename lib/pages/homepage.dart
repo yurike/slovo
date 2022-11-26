@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         return Drawer(
-          width: 230,
+          width: 250,
           child: ListView(children: [
             DrawerHeader(
               decoration: BoxDecoration(
@@ -72,6 +72,13 @@ class HomePage extends StatelessWidget {
                   Navigator.of(context).maybePop();
                 },
                 child: Text("Import"),
+              ),
+              trailing: ElevatedButton(
+                onPressed: () {
+                  context.read<NoteBloc>().add(SaveBackup());
+                  Navigator.of(context).maybePop();
+                },
+                child: Text('Backup'),
               ),
             )
           ]),

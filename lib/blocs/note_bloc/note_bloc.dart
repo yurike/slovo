@@ -51,12 +51,19 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NotesLoaded(notes));
     });
 
+    on<SaveBackup>((event, emit) async {
+      debugPrint("on<SaveBackup>");
+      final notes = _noteDao.getAllSortedByName();
+      var file = await GetIt.I<Backup>().writeBackup(notes);
+      // TODO: handle
+      debugPrint(file != null ? "Backup Saved" : "Saving is impossible");
+    });
+
     on<ImportFromFile>((event, emit) async {
       debugPrint("on<ImportFromFile>");
       emit(NotesLoading());
       var newNotes = await GetIt.I<Backup>().readFromFilePicker();
       if (newNotes != null) {
-        //debugPrint("new notes: " + newNotes.toString());
         await _noteDao.addAll(newNotes);
       }
       final notes = _noteDao.getAllSortedByName();
