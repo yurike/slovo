@@ -32,9 +32,9 @@ class Backup {
     return file.writeAsString(encoded);
   }
 
-  void share() async {
+  void share({String message = "Share backup"}) async {
     File file = await _localFile;
-    Share.shareFiles([file.path], text: 'Share backup');
+    Share.shareFiles([file.path], text: message);
   }
 
   Future<List<Note>> readNotes([bool local = true, File? selectedFile]) async {

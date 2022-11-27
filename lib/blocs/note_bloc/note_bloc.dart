@@ -55,8 +55,11 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       debugPrint("on<SaveBackup>");
       final notes = _noteDao.getAllSortedByName();
       var file = await GetIt.I<Backup>().writeBackup(notes);
-      // TODO: handle
+
       debugPrint(file != null ? "Backup Saved" : "Saving is impossible");
+      if (file != null) {
+        GetIt.I<Backup>().share(message: "Backup Saved. Share file?");
+      }
     });
 
     on<ImportFromFile>((event, emit) async {
