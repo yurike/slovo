@@ -63,9 +63,11 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     });
 
     on<ImportFromFile>((event, emit) async {
-      debugPrint("on<ImportFromFile>");
+      debugPrint("on<ImportFromFile>2 ${event.fromBackup}");
       emit(NotesLoading());
-      var newNotes = await GetIt.I<Backup>().readFromFilePicker();
+      var newNotes = (event.fromBackup)
+          ? await GetIt.I<Backup>().readNotes()
+          : await GetIt.I<Backup>().readFromFilePicker();
       if (newNotes != null) {
         await _noteDao.addAll(newNotes);
       }

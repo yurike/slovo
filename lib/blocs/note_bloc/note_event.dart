@@ -17,7 +17,10 @@ class AddNote extends NoteEvent {
   AddNote(this.note) : super([note]);
 }
 
-class ImportFromFile extends NoteEvent {}
+class ImportFromFile extends NoteEvent {
+  final bool fromBackup;
+  ImportFromFile(this.fromBackup) : super([fromBackup]);
+}
 
 class SaveBackup extends NoteEvent {}
 

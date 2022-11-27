@@ -66,19 +66,28 @@ class HomePage extends StatelessWidget {
                   .add(SetMode(state.darkMode, state.compactMode, value)),
             ),
             ListTile(
-              leading: ElevatedButton(
-                onPressed: () {
-                  context.read<NoteBloc>().add(ImportFromFile());
-                  Navigator.of(context).maybePop();
-                },
-                child: Text("Import"),
-              ),
-              trailing: ElevatedButton(
+              leading: TextButton(
                 onPressed: () {
                   context.read<NoteBloc>().add(SaveBackup());
                   Navigator.of(context).maybePop();
                 },
-                child: Text('Backup'),
+                child: Text('Save Backup'),
+              ),
+              trailing: TextButton(
+                onPressed: () {
+                  context.read<NoteBloc>().add(ImportFromFile(true));
+                  Navigator.of(context).maybePop();
+                },
+                child: Text('Load Backup'),
+              ),
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: () {
+                  context.read<NoteBloc>().add(ImportFromFile(false));
+                  Navigator.of(context).maybePop();
+                },
+                child: Text("Import SimpleNote backup"),
               ),
             )
           ]),
