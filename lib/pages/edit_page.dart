@@ -20,6 +20,7 @@ class _EditNotePageState extends State<EditNotePage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController? _titleTextController;
   TextEditingController? _contentTextController;
+  late ValueNotifier<bool> _markDown;
   late NoteBloc _noteBloc;
 
   int? get _noteId => widget.initialNote?.id;
@@ -32,6 +33,7 @@ class _EditNotePageState extends State<EditNotePage> {
         TextEditingController(text: widget.initialNote?.title);
     _contentTextController =
         TextEditingController(text: widget.initialNote?.body);
+    _markDown = ValueNotifier(widget.initialNote?.markdown ?? false);
   }
 
   Future save() async {
@@ -42,8 +44,8 @@ class _EditNotePageState extends State<EditNotePage> {
         ..id = _noteId != null ? _noteId! : date
         ..title = _titleTextController!.text
         ..body = _contentTextController!.text
+        ..markdown = _markDown.value
         ..created = date;
-      //if (_noteId != null) note.id = _noteId!;
 
       _noteBloc.add(_noteId != null ? UpdateNote(note) : AddNote(note));
       Navigator.pop(context);
@@ -156,6 +158,27 @@ class _EditNotePageState extends State<EditNotePage> {
                 save();
               },
             ),
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<int>(
+                    child: ValueListenableBuilder(
+                      valueListenable: _markDown,
+                      builder:
+                          (BuildContext context, dynamic value, Widget? child) {
+                        return CheckboxListTile(
+                          title: Text("Markdown"),
+                          value: _markDown.value,
+                          onChanged: (value) {
+                            _markDown.value = !_markDown.value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ];
+              },
+            ),
           ],
         ),
         body: Padding(
@@ -189,7 +212,7 @@ class _EditNotePageState extends State<EditNotePage> {
                             ? null
                             : 'Content must not be empty',
                         keyboardType: TextInputType.multiline,
-                        maxLines: 15,
+                        maxLines: 20,
                       )
                     ]))
           ]),

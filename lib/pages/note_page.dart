@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/pages/edit_page.dart';
 
@@ -39,11 +40,20 @@ class _NotePageState extends State<NotePage> {
           },
           child: ListView(children: <Widget>[
             ListTile(
-                title: Text(
-              note?.title ?? '',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )),
-            ListTile(title: Text(note?.body ?? ''))
+              title: Text(
+                note?.title ?? '',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            if (widget.note != null)
+              ListTile(
+                title: note!.markdown
+                    ? Markdown(
+                        data: note.body,
+                        shrinkWrap: true,
+                      )
+                    : Text(note.body),
+              ),
           ]),
         ));
   }
