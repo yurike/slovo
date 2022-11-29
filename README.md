@@ -4,7 +4,8 @@ Minimalistic Flutter app to keep and edit your notes.
 
 ## Features
 
-* Light/Dark modes
-* Save/Load backup
+* Markdown support
 * Import notes from SimpleNote
+* Save/Load backup
+* Light/Dark modes
 * ...
