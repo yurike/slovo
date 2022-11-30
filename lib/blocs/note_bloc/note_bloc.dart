@@ -1,5 +1,4 @@
-import 'dart:math';
-
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
@@ -16,46 +15,35 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   NoteBloc() : super(NotesLoading()) {
     on<LoadNotes>((event, emit) async {
-      debugPrint("on<LoadNotes>");
-      final notes = _noteDao.getAllSortedByName();
-      emit(NotesLoaded(notes));
+      // debugPrint("on<LoadNotes>");
+      _reloadNotes(emit);
     });
 
     on<AddNote>((event, emit) async {
-      debugPrint("on<AddNote>");
-      emit(NotesLoading()); // без этого не обновляется
+      // debugPrint("on<AddNote>");
+      emit(NotesLoading());
       await _noteDao.insert(event.note);
-      final notes = _noteDao.getAllSortedByName();
-      emit(NotesLoaded(notes));
+      _reloadNotes(emit);
     });
 
-    // on<EditNote>((event, emit) async {
-    //   print("on<EditNote>");
-    //   emit(NoteEdit(event.note));
-    // });
-
     on<DeleteNote>((event, emit) async {
-      debugPrint("on<DeleteNote>");
+      // debugPrint("on<DeleteNote>");
       await _noteDao.delete(event.note);
       emit(NotesLoading());
-      final notes = _noteDao.getAllSortedByName();
-      emit(NotesLoaded(notes));
+      _reloadNotes(emit);
     });
 
     on<UpdateNote>((event, emit) async {
-      debugPrint("on<UpdateNote>");
+      // debugPrint("on<UpdateNote>");
       emit(NotesLoading());
-      //newNote.id = event.updatedNote.id;
       await _noteDao.update(event.updatedNote);
-      final notes = _noteDao.getAllSortedByName();
-      emit(NotesLoaded(notes));
+      _reloadNotes(emit);
     });
 
     on<SaveBackup>((event, emit) async {
-      debugPrint("on<SaveBackup>");
+      // debugPrint("on<SaveBackup>");
       final notes = _noteDao.getAllSortedByName();
       var file = await GetIt.I<Backup>().writeBackup(notes);
-
       debugPrint(file != null ? "Backup Saved" : "Saving is impossible");
       if (file != null) {
         GetIt.I<Backup>().share(message: "Backup Saved. Share file?");
@@ -63,7 +51,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     });
 
     on<ImportFromFile>((event, emit) async {
-      debugPrint("on<ImportFromFile>2 ${event.fromBackup}");
+      //debugPrint("on<ImportFromFile> ${event.fromBackup}");
       emit(NotesLoading());
       var newNotes = (event.fromBackup)
           ? await GetIt.I<Backup>().readNotes()
@@ -71,11 +59,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       if (newNotes != null) {
         await _noteDao.addAll(newNotes);
       }
-      final notes = _noteDao.getAllSortedByName();
-      emit(NotesLoaded(notes));
+      _reloadNotes(emit);
     });
   }
 
-  @override
-  NoteState get initialState => NotesLoading();
+  void _reloadNotes(Emitter<NoteState> emit) {
+    final notes = _noteDao.getAllSortedByName();
+    emit(NotesLoaded(notes));
+  }
 }

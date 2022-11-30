@@ -115,7 +115,7 @@ class HomePage extends StatelessWidget {
                     subtitle:
                         settingsState.compactMode ? null : _buildSubtitle(note),
                     trailing: settingsState.showButtons
-                        ? _buildUpdateDeleteButtons(context, note)
+                        ? _buildButtons(context, note)
                         : null,
                     onTap: () {
                       goToNotePage(context, note: note, edit: false);
@@ -142,7 +142,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Row _buildUpdateDeleteButtons(context, Note displayedNote) {
+  Row _buildButtons(context, Note displayedNote) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -152,12 +152,12 @@ class HomePage extends StatelessWidget {
             goToNotePage(context, note: displayedNote);
           },
         ),
-        IconButton(
-          icon: const Icon(Icons.delete_outline),
-          onPressed: () {
-            BlocProvider.of<NoteBloc>(context).add(DeleteNote(displayedNote));
-          },
-        ),
+        // IconButton(
+        //   icon: const Icon(Icons.delete_outline),
+        //   onPressed: () {
+        //     BlocProvider.of<NoteBloc>(context).add(DeleteNote(displayedNote));
+        //   },
+        // ),
       ],
     );
   }
