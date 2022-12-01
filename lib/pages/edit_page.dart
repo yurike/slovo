@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notepad/database/note.dart';
 import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
+import 'package:markdown_editor_plus/markdown_editor_plus.dart';
 
 class EditNotePage extends StatefulWidget {
   /// null when adding a note
@@ -67,40 +67,7 @@ class _EditNotePageState extends State<EditNotePage> {
           dirty = true;
         }
         if (dirty) {
-          return (await showDialog<bool>(
-                  context: context,
-                  barrierDismissible: false, // user must tap button!
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Discard change?'),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            Text('Content has changed.'),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            Text('Tap \'CONTINUE\' to discard your changes.'),
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          child: Text('CONTINUE'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, false);
-                          },
-                          child: Text('CANCEL'),
-                        ),
-                      ],
-                    );
-                  })) ??
-              false;
+          return (await _showDirtyDialog(context)) ?? false;
         }
         return true;
       },
@@ -114,37 +81,7 @@ class _EditNotePageState extends State<EditNotePage> {
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () async {
-                  if (await showDialog<bool>(
-                          context: context,
-                          barrierDismissible: false, // user must tap button!
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Delete note?'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    Text(
-                                        'Tap \'YES\' to confirm note deletion.'),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: Text('YES'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: Text('NO'),
-                                ),
-                              ],
-                            );
-                          }) ??
-                      false) {
+                  if (await _showDeleteDialog(context) ?? false) {
                     _noteBloc.add(DeleteNote(widget.initialNote!));
                     Navigator.of(context).pop();
                     Navigator.of(context).maybePop();
@@ -171,6 +108,7 @@ class _EditNotePageState extends State<EditNotePage> {
                           value: _markDown.value,
                           onChanged: (value) {
                             _markDown.value = !_markDown.value;
+                            Navigator.maybePop(context);
                           },
                         );
                       },
@@ -200,24 +138,113 @@ class _EditNotePageState extends State<EditNotePage> {
                             val!.isNotEmpty ? null : 'Title must not be empty',
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 10,
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Content',
-                          border: OutlineInputBorder(),
-                        ),
-                        controller: _contentTextController,
-                        validator: (val) => val!.isNotEmpty
-                            ? null
-                            : 'Content must not be empty',
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 20,
-                      )
+                      ValueListenableBuilder(
+                        valueListenable: _markDown,
+                        builder:
+                            (BuildContext context, bool value, Widget? child) {
+                          return value
+                              ? MarkdownAutoPreview(
+                                  controller: _contentTextController,
+                                  toolbarBackground:
+                                      Theme.of(context).bottomAppBarColor,
+                                  expandableBackground:
+                                      Theme.of(context).backgroundColor,
+                                  decoration: InputDecoration(
+                                    hintText: 'Tap to edit markdown',
+                                  ),
+                                  emojiConvert: false,
+                                  maxLines: 10,
+                                  minLines: 9,
+                                  //expands: true,
+                                )
+                              : TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Content',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller: _contentTextController,
+                                  validator: (val) => val!.isNotEmpty
+                                      ? null
+                                      : 'Content must not be empty',
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 20,
+                                );
+                        },
+                      ),
                     ]))
           ]),
         ),
       ),
     );
+  }
+
+  Future<bool?> _showDirtyDialog(BuildContext context) async {
+    return await showDialog<bool>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Discard change?'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Content has changed.'),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text('Tap \'CONTINUE\' to discard your changes.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+                child: Text('CONTINUE'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: Text('CANCEL'),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<bool?> _showDeleteDialog(BuildContext context) async {
+    return await showDialog<bool>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete note?'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Tap \'YES\' to confirm note deletion.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('YES'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('NO'),
+              ),
+            ],
+          );
+        });
   }
 }

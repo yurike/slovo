@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => goToNotePage(context, note: null),
+        onPressed: () => _goToNotePage(context, note: null),
       ),
     );
   }
@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
                         ? _buildButtons(context, note)
                         : null,
                     onTap: () {
-                      goToNotePage(context, note: note, edit: false);
+                      _goToNotePage(context, note: note, edit: false);
                     },
                   );
                 },
@@ -148,9 +148,7 @@ class HomePage extends StatelessWidget {
       children: <Widget>[
         IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () {
-            goToNotePage(context, note: displayedNote);
-          },
+          onPressed: () => _goToNotePage(context, note: displayedNote),
         ),
         // IconButton(
         //   icon: const Icon(Icons.delete_outline),
@@ -162,7 +160,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void goToNotePage(context, {required Note? note, bool edit = true}) {
+  void _goToNotePage(context, {required Note? note, bool edit = true}) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       if (edit) {
         return EditNotePage(initialNote: note);
