@@ -7,6 +7,7 @@ import 'package:my_notepad/pages/edit_page.dart';
 import 'package:my_notepad/utils/markdown_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+@Deprecated("Replaced with edit_page")
 class NotePage extends StatefulWidget {
   final Note? note;
 

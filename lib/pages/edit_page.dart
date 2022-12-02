@@ -143,8 +143,8 @@ class _EditNotePageState extends State<EditNotePage> {
                       ValueListenableBuilder(
                         valueListenable: _markDown,
                         builder:
-                            (BuildContext context, bool value, Widget? child) {
-                          return value
+                            (BuildContext context, bool mdIsOn, Widget? child) {
+                          return mdIsOn
                               ? MarkdownAutoPreview(
                                   controller: _contentTextController,
                                   toolbarBackground:
@@ -152,11 +152,11 @@ class _EditNotePageState extends State<EditNotePage> {
                                   expandableBackground:
                                       Theme.of(context).backgroundColor,
                                   decoration: InputDecoration(
-                                    hintText: 'Tap to edit markdown',
+                                    hintText: 'Text with markdown support',
                                   ),
-                                  emojiConvert: false,
-                                  maxLines: 10,
-                                  minLines: 9,
+                                  emojiConvert: true,
+                                  minLines: 5,
+                                  maxLines: 20,
                                   //expands: true,
                                 )
                               : TextFormField(
@@ -169,6 +169,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                       ? null
                                       : 'Content must not be empty',
                                   keyboardType: TextInputType.multiline,
+                                  minLines: 5,
                                   maxLines: 20,
                                 );
                         },

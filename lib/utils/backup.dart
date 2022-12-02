@@ -38,7 +38,7 @@ class Backup {
   }
 
   Future<List<Note>> readNotes([bool local = true, File? selectedFile]) async {
-    debugPrint("readNotes $local ${selectedFile?.path}");
+    //debugPrint("readNotes $local ${selectedFile?.path}");
     try {
       File file;
       if (local) {
@@ -67,9 +67,9 @@ class Backup {
         //final fileName = result.files.first.name;
         var activeNotes = json.decode(utf8.decode(fileBytes!))["activeNotes"];
         for (var aNote in activeNotes) {
-          debugPrint(DateTime.tryParse(aNote["creationDate"])
-              ?.millisecondsSinceEpoch
-              .toString());
+          // debugPrint(DateTime.tryParse(aNote["creationDate"])
+          //     ?.millisecondsSinceEpoch
+          //     .toString());
           notes.add(Note.fromSimpleNoteJson(aNote));
         }
         //notes = activeNotes.map((i) => Note.fromSimpleNoteJson(i)).toList();
