@@ -1,4 +1,4 @@
-# Toopo Notes
+# FNotes
 
 Minimalistic Flutter app to keep and edit your notes.
 
