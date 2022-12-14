@@ -12,9 +12,11 @@ import 'package:my_notepad/pages/homepage.dart';
 import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
 import 'package:my_notepad/settings/theme_class.dart';
 import 'package:my_notepad/utils/backup.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   //FlutterCryptography.enable();
   await Hive.initFlutter();
   await Hive.openBox('notes');
@@ -24,10 +26,11 @@ Future<void> main() async {
         ? HydratedStorage.webStorageDirectory
         : await getTemporaryDirectory(),
   );
-  runApp(MyApp());
+  runApp(App());
+  FlutterNativeSplash.remove();
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
