@@ -1,4 +1,4 @@
-# FNotes
+# SLOVO
 
 Minimalistic Flutter app to keep and edit your notes.
 

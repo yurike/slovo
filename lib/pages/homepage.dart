@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_notepad/blocs/settings_bloc/settings_bloc.dart';
-import 'package:my_notepad/database/note.dart';
-import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
-import 'package:my_notepad/pages/edit_page.dart';
+import 'package:slovo/blocs/settings_bloc/settings_bloc.dart';
+import 'package:slovo/database/note.dart';
+import 'package:slovo/blocs/note_bloc/note_bloc.dart';
+import 'package:slovo/pages/edit_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

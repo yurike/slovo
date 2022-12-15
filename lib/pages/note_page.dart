@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:my_notepad/database/note.dart';
-import 'package:my_notepad/pages/edit_page.dart';
-import 'package:my_notepad/utils/markdown_extensions.dart';
+import 'package:slovo/database/note.dart';
+import 'package:slovo/pages/edit_page.dart';
+import 'package:slovo/utils/markdown_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 @Deprecated("Replaced with edit_page")

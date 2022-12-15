@@ -7,11 +7,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 //import 'package:cryptography_flutter/cryptography_flutter.dart';
 
-import 'package:my_notepad/blocs/settings_bloc/settings_bloc.dart';
-import 'package:my_notepad/pages/homepage.dart';
-import 'package:my_notepad/blocs/note_bloc/note_bloc.dart';
-import 'package:my_notepad/settings/theme_class.dart';
-import 'package:my_notepad/utils/backup.dart';
+import 'package:slovo/blocs/settings_bloc/settings_bloc.dart';
+import 'package:slovo/pages/homepage.dart';
+import 'package:slovo/blocs/note_bloc/note_bloc.dart';
+import 'package:slovo/settings/theme_class.dart';
+import 'package:slovo/utils/backup.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
