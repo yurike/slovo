@@ -45,7 +45,8 @@ class _EditNotePageState extends State<EditNotePage> {
         ..title = _titleTextController!.text
         ..body = _contentTextController!.text
         ..markdown = _markDown.value
-        ..created = date;
+        ..modified = date
+        ..created = widget.initialNote?.created ?? date;
 
       _noteBloc.add(_noteId != null ? UpdateNote(note) : AddNote(note));
       Navigator.pop(context);

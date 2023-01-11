@@ -42,7 +42,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
     on<SaveBackup>((event, emit) async {
       // debugPrint("on<SaveBackup>");
-      final notes = _noteDao.getAllSortedByName();
+      final notes = _noteDao.getAll();
       var file = await GetIt.I<Backup>().writeBackup(notes);
       debugPrint(file != null ? "Backup Saved" : "Saving is impossible");
       if (file != null) {
@@ -64,7 +64,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   }
 
   void _reloadNotes(Emitter<NoteState> emit) {
-    final notes = _noteDao.getAllSortedByName();
+    final notes = _noteDao.getAll();
     emit(NotesLoaded(notes));
   }
 }

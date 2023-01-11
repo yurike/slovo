@@ -16,7 +16,7 @@ class NoteDao {
     _box.delete(note.id);
   }
 
-  List<Note> getAllSortedByName() {
+  List<Note> getAll() {
     //debugPrint("getAllSortedByName ${_box.values.length}");
     return _box.keys.map((key) {
       final value = _box.get(key);
