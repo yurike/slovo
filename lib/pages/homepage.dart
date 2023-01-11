@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
     BlocProvider.of<NoteBloc>(context).add(LoadNotes());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Notepad'),
+        title: const Text('My Notes'),
       ),
       drawer: _buildDrawer(),
       body: _buildBody(),
@@ -101,6 +101,8 @@ class HomePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is NotesLoaded) {
+          state.notes
+              .sort((b, a) => a.modified.compareTo(b.modified)); // sorting desc
           return ListView.builder(
             itemCount: state.notes.length,
             itemBuilder: (context, index) {
